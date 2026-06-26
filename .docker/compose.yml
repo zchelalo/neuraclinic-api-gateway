@@ -1,0 +1,27 @@
+name: neuraclinic-api-gateway
+
+services:
+  neuraclinic-api-gateway:
+    container_name: neuraclinic-api-gateway
+    restart: unless-stopped
+    env_file: ../.env
+    build:
+      context: ../
+      dockerfile: ./.docker/Dockerfile
+    ports:
+      - 8000:8000
+    volumes:
+      - ../:/app-src
+      - ../../neuraclinic-auth/certs:/app/auth-certs:ro
+      - ../../neuraclinic-users/certs:/app/users-certs:ro
+      - ../../neuraclinic-records/certs:/app/records-certs:ro
+      - ../../neuraclinic-location/certs:/app/location-certs:ro
+      - ../../neuraclinic-file-management/certs:/app/file-management-certs:ro
+    environment:
+      ENVIRONMENT: development
+    networks:
+      - neuraclinic-network
+
+networks:
+  neuraclinic-network:
+    external: true
