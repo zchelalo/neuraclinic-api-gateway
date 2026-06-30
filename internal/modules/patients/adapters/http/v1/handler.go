@@ -8,6 +8,7 @@ import (
 	"github.com/zchelalo/neuraclinic-api-gateway/internal/modules/patients/application"
 	"github.com/zchelalo/neuraclinic-api-gateway/internal/server/httpx"
 	"github.com/zchelalo/neuraclinic-api-gateway/internal/shared/grpcclient"
+	"github.com/zchelalo/neuraclinic-api-gateway/internal/shared/language"
 	"github.com/zchelalo/neuraclinic-api-gateway/pkg/meta"
 	"github.com/zchelalo/neuraclinic-api-gateway/pkg/parse"
 	"github.com/zchelalo/neuraclinic-api-gateway/pkg/response"
@@ -156,7 +157,7 @@ func (h *Handler) findByID(w http.ResponseWriter, r *http.Request) {
 		response.WriteError(w, r, err)
 		return
 	}
-	response.Write(w, r, http.StatusOK, fromProtoPatient(resp.GetPatient()), nil)
+	response.Write(w, r, http.StatusOK, fromProtoPatient(resp.GetPatient(), language.ResolveRequest(r)), nil)
 }
 
 type updateIdentificationRequest struct {
@@ -226,7 +227,7 @@ func (h *Handler) updateIdentification(w http.ResponseWriter, r *http.Request) {
 		response.WriteError(w, r, err)
 		return
 	}
-	response.Write(w, r, http.StatusOK, fromProtoPatient(resp.GetPatient()), nil)
+	response.Write(w, r, http.StatusOK, fromProtoPatient(resp.GetPatient(), language.ResolveRequest(r)), nil)
 }
 
 type updateContactRequest struct {
@@ -249,7 +250,7 @@ func (h *Handler) updateContact(w http.ResponseWriter, r *http.Request) {
 		response.WriteError(w, r, err)
 		return
 	}
-	response.Write(w, r, http.StatusOK, fromProtoPatient(resp.GetPatient()), nil)
+	response.Write(w, r, http.StatusOK, fromProtoPatient(resp.GetPatient(), language.ResolveRequest(r)), nil)
 }
 
 type updateAddressRequest struct {
@@ -284,5 +285,5 @@ func (h *Handler) updateAddress(w http.ResponseWriter, r *http.Request) {
 		response.WriteError(w, r, err)
 		return
 	}
-	response.Write(w, r, http.StatusOK, fromProtoPatient(resp.GetPatient()), nil)
+	response.Write(w, r, http.StatusOK, fromProtoPatient(resp.GetPatient(), language.ResolveRequest(r)), nil)
 }

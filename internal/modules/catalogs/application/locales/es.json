@@ -1,0 +1,33 @@
+{
+  "sexes": {
+    "SEX_MALE": "Masculino",
+    "SEX_FEMALE": "Femenino",
+    "SEX_OTHER": "Otro",
+    "SEX_PREFER_NOT_TO_SAY": "Prefiero no decirlo"
+  },
+  "marital_statuses": {
+    "MARITAL_STATUS_SINGLE": "Soltero",
+    "MARITAL_STATUS_MARRIED": "Casado",
+    "MARITAL_STATUS_DIVORCED": "Divorciado",
+    "MARITAL_STATUS_WIDOWED": "Viudo",
+    "MARITAL_STATUS_SEPARATED": "Separado",
+    "MARITAL_STATUS_COHABITING": "Unión libre"
+  },
+  "appointment_statuses": {
+    "APPOINTMENT_STATUS_SCHEDULED": "Programada",
+    "APPOINTMENT_STATUS_COMPLETED": "Completada",
+    "APPOINTMENT_STATUS_RESCHEDULED": "Reagendada",
+    "APPOINTMENT_STATUS_CANCELLED": "Cancelada",
+    "APPOINTMENT_STATUS_NO_SHOW": "No asistió"
+  },
+  "file_statuses": {
+    "FILE_STATUS_UPLOADING": "Subiendo",
+    "FILE_STATUS_AVAILABLE": "Disponible",
+    "FILE_STATUS_DELETED": "Eliminado",
+    "FILE_STATUS_ERROR": "Error"
+  },
+  "role_keys": {
+    "ROLE_KEY_ADMIN": "Administrador",
+    "ROLE_KEY_PSYCHOLOGIST": "Psicólogo"
+  }
+}

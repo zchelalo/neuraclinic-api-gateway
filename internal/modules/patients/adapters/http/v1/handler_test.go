@@ -53,6 +53,7 @@ func TestFindByIDContract(t *testing.T) {
 	handler.RegisterRoutes(mux, passthroughPatientsMiddleware(), func(...string) middleware.Middleware { return passthroughPatientsMiddleware() })
 
 	req := httptest.NewRequest(http.MethodGet, "/api/v1/patients/patient-1", nil)
+	req.Header.Set("Accept-Language", "es-MX,en;q=0.8")
 	rec := httptest.NewRecorder()
 
 	mux.ServeHTTP(rec, req)
@@ -66,8 +67,14 @@ func TestFindByIDContract(t *testing.T) {
 			"birth_country": "MX",
 			"birth_province": "JAL",
 			"birth_city": "Guadalajara",
-			"sex": "SEX_FEMALE",
-			"marital_status": "MARITAL_STATUS_SINGLE",
+			"sex": {
+				"value": "SEX_FEMALE",
+				"label": "Femenino"
+			},
+			"marital_status": {
+				"value": "MARITAL_STATUS_SINGLE",
+				"label": "Soltero"
+			},
 			"phone": "5551234567",
 			"email": "ana@example.com",
 			"address": {

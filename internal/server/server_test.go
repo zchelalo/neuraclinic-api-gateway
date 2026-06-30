@@ -89,6 +89,24 @@ func TestServerAuthAndProtectedRoutes(t *testing.T) {
 			t.Fatal("expected data in locations response")
 		}
 	})
+
+	t.Run("catalogs with auth", func(t *testing.T) {
+		req := httptest.NewRequest(http.MethodGet, "/api/v1/catalogs/sexes", nil)
+		req.AddCookie(&http.Cookie{Name: "access_token", Value: "basic"})
+		req.Header.Set("Accept-Language", "es")
+		rec := httptest.NewRecorder()
+		srv.Handler().ServeHTTP(rec, req)
+		if rec.Code != http.StatusOK {
+			t.Fatalf("expected 200, got %d", rec.Code)
+		}
+		var body map[string]any
+		if err := json.NewDecoder(rec.Body).Decode(&body); err != nil {
+			t.Fatalf("decode body: %v", err)
+		}
+		if body["data"] == nil {
+			t.Fatal("expected data in catalogs response")
+		}
+	})
 }
 
 type fakeAuthPort struct{}

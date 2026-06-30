@@ -2,6 +2,7 @@ package v1
 
 import (
 	recordv1 "github.com/zchelalo/neuraclinic-api-gateway/gen/go/record/v1"
+	catalogsapplication "github.com/zchelalo/neuraclinic-api-gateway/internal/modules/catalogs/application"
 	"github.com/zchelalo/neuraclinic-api-gateway/internal/shared/httpdto"
 )
 
@@ -20,27 +21,32 @@ type addressResponse struct {
 	DeletedAt    *string `json:"deleted_at,omitempty"`
 }
 
+type enumValueResponse struct {
+	Value string `json:"value,omitempty"`
+	Label string `json:"label,omitempty"`
+}
+
 type patientResponse struct {
-	Id             string           `json:"id,omitempty"`
-	FirstName      string           `json:"first_name,omitempty"`
-	MiddleName     *string          `json:"middle_name,omitempty"`
-	FirstLastName  string           `json:"first_last_name,omitempty"`
-	SecondLastName *string          `json:"second_last_name,omitempty"`
-	BirthDate      *httpdto.Date    `json:"birth_date,omitempty"`
-	BirthCountry   string           `json:"birth_country,omitempty"`
-	BirthProvince  string           `json:"birth_province,omitempty"`
-	BirthCity      string           `json:"birth_city,omitempty"`
-	Sex            string           `json:"sex,omitempty"`
-	MaritalStatus  string           `json:"marital_status,omitempty"`
-	Occupation     *string          `json:"occupation,omitempty"`
-	Religion       *string          `json:"religion,omitempty"`
-	Phone          string           `json:"phone,omitempty"`
-	Email          string           `json:"email,omitempty"`
-	Address        *addressResponse `json:"address,omitempty"`
-	PsychologistID string           `json:"psychologist_id,omitempty"`
-	CreatedAt      *string          `json:"created_at,omitempty"`
-	UpdatedAt      *string          `json:"updated_at,omitempty"`
-	DeletedAt      *string          `json:"deleted_at,omitempty"`
+	Id             string            `json:"id,omitempty"`
+	FirstName      string            `json:"first_name,omitempty"`
+	MiddleName     *string           `json:"middle_name,omitempty"`
+	FirstLastName  string            `json:"first_last_name,omitempty"`
+	SecondLastName *string           `json:"second_last_name,omitempty"`
+	BirthDate      *httpdto.Date     `json:"birth_date,omitempty"`
+	BirthCountry   string            `json:"birth_country,omitempty"`
+	BirthProvince  string            `json:"birth_province,omitempty"`
+	BirthCity      string            `json:"birth_city,omitempty"`
+	Sex            enumValueResponse `json:"sex,omitempty"`
+	MaritalStatus  enumValueResponse `json:"marital_status,omitempty"`
+	Occupation     *string           `json:"occupation,omitempty"`
+	Religion       *string           `json:"religion,omitempty"`
+	Phone          string            `json:"phone,omitempty"`
+	Email          string            `json:"email,omitempty"`
+	Address        *addressResponse  `json:"address,omitempty"`
+	PsychologistID string            `json:"psychologist_id,omitempty"`
+	CreatedAt      *string           `json:"created_at,omitempty"`
+	UpdatedAt      *string           `json:"updated_at,omitempty"`
+	DeletedAt      *string           `json:"deleted_at,omitempty"`
 }
 
 type patientSummaryResponse struct {
@@ -90,7 +96,7 @@ func fromProtoAddress(value *recordv1.Address) *addressResponse {
 	}
 }
 
-func fromProtoPatient(value *recordv1.Patient) *patientResponse {
+func fromProtoPatient(value *recordv1.Patient, locale string) *patientResponse {
 	if value == nil {
 		return nil
 	}
@@ -104,8 +110,17 @@ func fromProtoPatient(value *recordv1.Patient) *patientResponse {
 		BirthCountry:   value.GetBirthCountry(),
 		BirthProvince:  value.GetBirthProvince(),
 		BirthCity:      value.GetBirthCity(),
-		Sex:            httpdto.EnumString(value.GetSex()),
-		MaritalStatus:  httpdto.EnumString(value.GetMaritalStatus()),
+		Sex: enumValueResponse{
+			Value: httpdto.EnumString(value.GetSex()),
+			Label: catalogsapplication.LocalizedSexLabel(locale, value.GetSex()),
+		},
+		MaritalStatus: enumValueResponse{
+			Value: httpdto.EnumString(value.GetMaritalStatus()),
+			Label: catalogsapplication.LocalizedMaritalStatusLabel(
+				locale,
+				value.GetMaritalStatus(),
+			),
+		},
 		Occupation:     value.Occupation,
 		Religion:       value.Religion,
 		Phone:          value.GetPhone(),

@@ -16,6 +16,8 @@ import (
 	attachmentsapp "github.com/zchelalo/neuraclinic-api-gateway/internal/modules/attachments/application"
 	authhttp "github.com/zchelalo/neuraclinic-api-gateway/internal/modules/auth/adapters/http/v1"
 	authapp "github.com/zchelalo/neuraclinic-api-gateway/internal/modules/auth/application"
+	catalogshttp "github.com/zchelalo/neuraclinic-api-gateway/internal/modules/catalogs/adapters/http/v1"
+	catalogsapp "github.com/zchelalo/neuraclinic-api-gateway/internal/modules/catalogs/application"
 	familiogramshttp "github.com/zchelalo/neuraclinic-api-gateway/internal/modules/familiograms/adapters/http/v1"
 	familiogramsapp "github.com/zchelalo/neuraclinic-api-gateway/internal/modules/familiograms/application"
 	locationshttp "github.com/zchelalo/neuraclinic-api-gateway/internal/modules/locations/adapters/http/v1"
@@ -103,6 +105,7 @@ func New(cfg Config, logger *zap.Logger, deps Dependencies) *Server {
 	attachmentshttp.NewHandler(deps.Attachments, 10).RegisterRoutes(mux, authMiddleware, permissionMiddleware)
 	familiogramshttp.NewHandler(deps.Familiograms).RegisterRoutes(mux, authMiddleware, permissionMiddleware)
 	locationshttp.NewHandler(deps.Locations, 20).RegisterRoutes(mux, authMiddleware)
+	catalogshttp.NewHandler(catalogsapp.NewService()).RegisterRoutes(mux, authMiddleware)
 
 	handler := middleware.Chain(
 		mux,

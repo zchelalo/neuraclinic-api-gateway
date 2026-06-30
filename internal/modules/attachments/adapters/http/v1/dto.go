@@ -15,6 +15,7 @@ type createAttachmentResponse struct {
 type attachmentResponse struct {
 	Id           string  `json:"id,omitempty"`
 	FileID       string  `json:"file_id,omitempty"`
+	OriginalName string  `json:"original_name,omitempty"`
 	MimeType     string  `json:"mime_type,omitempty"`
 	DownloadURL  *string `json:"download_url,omitempty"`
 	ExpiresAt    *string `json:"expires_at,omitempty"`
@@ -40,6 +41,7 @@ func fromProtoAttachment(value *recordv1.Attachment) *attachmentResponse {
 	return &attachmentResponse{
 		Id:           value.GetId(),
 		FileID:       value.GetFileId(),
+		OriginalName: value.GetOriginalName(),
 		MimeType:     value.GetMimeType(),
 		DownloadURL:  value.DownloadUrl,
 		ExpiresAt:    httpdto.Timestamp(value.GetExpiresAt()),
